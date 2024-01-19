@@ -20,6 +20,7 @@ target_include_directories(lox_a PUBLIC src/)
 target_sources(lox_a
         PRIVATE
             src/lib/test.cpp
+            src/lexer/lexer.cpp
         INTERFACE
             $<TARGET_OBJECTS:lox_a>
         )
