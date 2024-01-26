@@ -12,16 +12,18 @@ public:
     Lexer(const std::string &src)
         : src(src), tokens(std::vector<Token>{}), start(0), current(0), line(1) {}
 
-    void process();
+    std::vector<Token> process();
+    void process_token();
     char advance();
     void add_token_with_literal(TokenType type, std::any literal);
     void add_token(TokenType type);
     bool match(char expected);
     char peek();
+    void string();
 
     bool is_end();
 
-// private:
+private:
     const std::string src;
     std::vector<Token> tokens;
     uint32_t start;

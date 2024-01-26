@@ -9,11 +9,10 @@
 
 static void run(const std::string &src) {
     Lexer lexer{src};
-    // std::vector tokens = lexer.process();
-    lexer.process();
-    dbg("lexer.tokens.size() = {}\n", lexer.tokens.size());
+    auto tokens = lexer.process();
+    dbg("lexer.tokens.size() = {}", tokens.size());
 
-    for (auto &token : lexer.tokens) {
+    for (auto &token : tokens) {
         info("token: {} {}", token.to_str(), token.lexeme);
     }
 }
