@@ -4,18 +4,6 @@
 #include <iostream>
 #include <format>
 
-// auto Lexer::process() -> std::vector<Token> {
-//     // dbg("src = {}", src);
-
-//     while(!is_end()) {
-//         start = current;
-//         process();
-//     }
-
-//     tokens.emplace_back(Token(TokenType::EoF, "", std::any::any(), line)); 
-//     return tokens;
-// }
-
 auto Lexer::process() -> std::vector<Token> {
     while (!is_end()) {
         start = current;
@@ -96,7 +84,11 @@ auto Lexer::process_token() -> void {
         string();
         break;
     default:
-        err("Unexpected character on line {}: {}", line, c);
+        if (is_digit(c)) {
+            number();
+        } else {
+            err("Unexpected character on line {}: {}", line, c);
+        }
         break;
     }
 }
@@ -121,19 +113,29 @@ auto Lexer::add_token(TokenType type) -> void {
 }
 
 auto Lexer::match(char expected) -> bool {
-    if (is_end())
+    if (is_end()) {
         return false;
-    if (src.at(current) != expected)
+    }
+    if (src.at(current) != expected) {
         return false;
+    }
     
     current++;
     return true;
 }
 
 auto Lexer::peek() -> char {
-    if (is_end())
+    if (is_end()) {
         return '\0';
+    }
     return src.at(current);
+}
+
+auto Lexer::peek_next() -> char {
+    if ((current + 1) >= src.length()) {
+        return '\0';
+    }
+    return src.at(current + 1);
 }
 
 auto Lexer::string() -> void {
@@ -153,6 +155,27 @@ auto Lexer::string() -> void {
 
     auto value = src.substr(start + 1, current - 1);
     add_token_with_literal(TokenType::String, value);
+}
+
+auto Lexer::number() -> void {
+    dbg("inside number");
+    while (is_digit(peek())) {
+        advance();
+    }
+
+    if ((peek() == '.') && (is_digit(peek_next()))) {
+        advance();
+        while (is_digit(peek())) {
+            advance();
+        }
+    }
+
+    auto literal = src.substr(start, current - start);
+    add_token_with_literal(TokenType::Number, std::stod(literal));
+}
+
+auto Lexer::is_digit(char c) -> bool {
+    return (c >= '0') && (c <= '9');
 }
 
 auto Lexer::is_end() -> bool {

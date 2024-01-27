@@ -12,16 +12,19 @@ public:
     Lexer(const std::string &src)
         : src(src), tokens(std::vector<Token>{}), start(0), current(0), line(1) {}
 
-    std::vector<Token> process();
-    void process_token();
-    char advance();
-    void add_token_with_literal(TokenType type, std::any literal);
-    void add_token(TokenType type);
-    bool match(char expected);
-    char peek();
-    void string();
+    auto process() -> std::vector<Token>;
+    auto process_token() -> void;
+    auto advance() -> char;
+    auto add_token_with_literal(TokenType type, std::any literal) -> void;
+    auto add_token(TokenType type) -> void;
+    auto match(char expected) -> bool;
+    auto peek() -> char;
+    auto peek_next() -> char;
+    auto string() -> void;
+    auto number() -> void;
 
-    bool is_end();
+    auto is_digit(char c) -> bool;
+    auto is_end() -> bool;
 
 private:
     const std::string src;
