@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <any>
 
 #include "token.hpp"
@@ -22,8 +23,11 @@ public:
     auto peek_next() -> char;
     auto string() -> void;
     auto number() -> void;
+    auto identifier() -> void;
 
     auto is_digit(char c) -> bool;
+    auto is_alpha(char c) -> bool;
+    auto is_alpha_numeric(char c) -> bool;
     auto is_end() -> bool;
 
 private:
@@ -32,4 +36,22 @@ private:
     uint32_t start;
     uint32_t current;
     uint32_t line;
+    const std::map<std::string, TokenType> keywords = {
+        { "and", TokenType::And },
+        { "class", TokenType::Class },
+        { "else", TokenType::Else },
+        { "false", TokenType::False },
+        { "for", TokenType::For },
+        { "fun", TokenType::Fun },
+        { "if", TokenType::If },
+        { "nil", TokenType::Nil },
+        { "or", TokenType::Or },
+        { "print", TokenType::Print },
+        { "return", TokenType::Return },
+        { "super", TokenType::Super },
+        { "this", TokenType::This },
+        { "true", TokenType::True },
+        { "var", TokenType::Var },
+        { "while", TokenType::While },
+    };
 };

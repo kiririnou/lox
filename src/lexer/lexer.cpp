@@ -16,7 +16,7 @@ auto Lexer::process() -> std::vector<Token> {
 
 auto Lexer::process_token() -> void {
     auto c = advance();
-    dbg("c = {}", c);
+    // dbg("c = {}", c);
 
     switch (c)
     {
@@ -86,6 +86,8 @@ auto Lexer::process_token() -> void {
     default:
         if (is_digit(c)) {
             number();
+        } else if (std::isalpha(c)) {
+            identifier();
         } else {
             err("Unexpected character on line {}: {}", line, c);
         }
@@ -153,12 +155,12 @@ auto Lexer::string() -> void {
 
     advance();
 
-    auto value = src.substr(start + 1, current - 1);
+    // auto value = src.substr(start + 1, current - 1);
+    auto value = src.substr(start + 1, (current - start) - 1);
     add_token_with_literal(TokenType::String, value);
 }
 
 auto Lexer::number() -> void {
-    dbg("inside number");
     while (is_digit(peek())) {
         advance();
     }
@@ -174,8 +176,31 @@ auto Lexer::number() -> void {
     add_token_with_literal(TokenType::Number, std::stod(literal));
 }
 
+auto Lexer::identifier() -> void {
+    while (is_alpha_numeric(peek())) {
+        advance();
+    }
+
+    auto text = src.substr(start, current - start);
+    auto type = TokenType::Identifier;
+    if (keywords.contains(text)) {
+        type = keywords.at(text);
+    }
+    add_token_with_literal(type, text);
+}
+
 auto Lexer::is_digit(char c) -> bool {
     return (c >= '0') && (c <= '9');
+}
+
+auto Lexer::is_alpha(char c) -> bool {
+    return  ((c >= 'a') && (c <= 'z')) ||
+            ((c >= 'A') && (c <= 'Z')) ||
+            c == '_';
+}
+
+auto Lexer::is_alpha_numeric(char c) -> bool {
+    return is_alpha(c) || is_digit(c);
 }
 
 auto Lexer::is_end() -> bool {
