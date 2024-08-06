@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include <format>
 
 #include "lib/test.hpp"
@@ -13,7 +12,7 @@ static void run(const std::string &src) {
     dbg("lexer.tokens.size() = {}", tokens.size());
 
     for (auto &token : tokens) {
-        info("token: {} {}", token.to_str(), token.lexeme);
+        info("token: {} = {}", token.to_str(), token.lexeme);
     }
 }
 

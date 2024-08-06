@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <format>
 
 inline void logger(const std::string &level, const std::string &msg) {

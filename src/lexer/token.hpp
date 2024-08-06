@@ -3,6 +3,7 @@
 #include <any>
 #include <unordered_map>
 #include <string>
+#include <cstdint>
 
 enum class TokenType {
     // Single char tokens

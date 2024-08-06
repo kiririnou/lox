@@ -1,7 +1,6 @@
 #include "lexer.hpp"
 #include "../utils/utils.hpp"
 
-#include <iostream>
 #include <format>
 
 auto Lexer::process() -> std::vector<Token> {
@@ -63,13 +62,10 @@ auto Lexer::process_token() -> void {
         add_token(match('>') ? TokenType::GreaterEqual : TokenType::Greater);
         break;
     case '/':
-        if (match('/'))
-        {
+        if (match('/')) {
             while (peek() != '\n' && !is_end())
                 advance();
-        }
-        else
-        {
+        } else {
             add_token(TokenType::Slash);
         }
         break;
@@ -111,7 +107,7 @@ auto Lexer::add_token_with_literal(TokenType type, std::any literal) -> void {
 }
 
 auto Lexer::add_token(TokenType type) -> void {
-    add_token_with_literal(type, std::any::any());
+    add_token_with_literal(type, std::any());
 }
 
 auto Lexer::match(char expected) -> bool {
