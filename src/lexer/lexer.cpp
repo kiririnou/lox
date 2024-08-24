@@ -1,5 +1,5 @@
 #include "lexer.hpp"
-#include "../utils/utils.hpp"
+#include "utils/utils.hpp"
 
 #include <format>
 
@@ -56,10 +56,10 @@ auto Lexer::process_token() -> void {
         add_token(match('=') ? TokenType::EqualEqual : TokenType::Equal);
         break;
     case '<':
-        add_token(match('<') ? TokenType::LessEqual : TokenType::Less);
+        add_token(match('=') ? TokenType::LessEqual : TokenType::Less);
         break;
     case '>':
-        add_token(match('>') ? TokenType::GreaterEqual : TokenType::Greater);
+        add_token(match('=') ? TokenType::GreaterEqual : TokenType::Greater);
         break;
     case '/':
         if (match('/')) {
@@ -95,7 +95,7 @@ auto Lexer::advance() -> char {
     return src.at(current++);
 }
 
-auto Lexer::add_token_with_literal(TokenType type, std::any literal) -> void {
+auto Lexer::add_token_with_literal(TokenType type, Type literal) -> void {
     // TODO: check if substr is used in a correct way
     std::string lexeme; 
     if (type == TokenType::EoF) {
@@ -107,7 +107,7 @@ auto Lexer::add_token_with_literal(TokenType type, std::any literal) -> void {
 }
 
 auto Lexer::add_token(TokenType type) -> void {
-    add_token_with_literal(type, std::any());
+    add_token_with_literal(type, std::monostate{});
 }
 
 auto Lexer::match(char expected) -> bool {

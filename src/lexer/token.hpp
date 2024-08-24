@@ -1,6 +1,6 @@
 #pragma once
 
-#include <any>
+#include <variant>
 #include <unordered_map>
 #include <string>
 #include <cstdint>
@@ -79,16 +79,21 @@ const std::unordered_map<TokenType, std::string> token_type_str = {
     { TokenType::EoF, "EoF" }
 };
 
+using Type = std::variant<std::monostate, double, std::string>;
 struct Token {
     TokenType type;
     std::string lexeme;
-    std::any literal;
+    Type literal;
     uint32_t line;
-    
-    Token(TokenType type, std::string lexeme, std::any literal, uint32_t line)
+
+    Token(TokenType type, std::string lexeme, Type literal, uint32_t line)
         : type(type), lexeme(lexeme), literal(literal), line(line) {}
 
-    std::string to_str() const {
+    std::string to_token_type_str() const {
         return token_type_str.at(type);
+    }
+
+    std::string to_str() const {
+        return lexeme;
     }
 };

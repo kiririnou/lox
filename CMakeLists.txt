@@ -14,9 +14,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 add_library(lox_a OBJECT)
-target_include_directories(lox_a PUBLIC src/)
+target_include_directories(lox_a PUBLIC src/ src/lexer src/parser src/utils)
 target_sources(lox_a
         PRIVATE
             src/lib/test.cpp

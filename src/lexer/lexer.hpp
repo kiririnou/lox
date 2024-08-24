@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <any>
 #include <cstdint>
 
 #include "token.hpp"
@@ -17,7 +16,7 @@ public:
     auto process() -> std::vector<Token>;
     auto process_token() -> void;
     auto advance() -> char;
-    auto add_token_with_literal(TokenType type, std::any literal) -> void;
+    auto add_token_with_literal(TokenType type, Type literal) -> void;
     auto add_token(TokenType type) -> void;
     auto match(char expected) -> bool;
     auto peek() -> char;
